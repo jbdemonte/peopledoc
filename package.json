@@ -1,0 +1,14 @@
+{
+  "name": "peopledoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jean-Baptiste Demonte <jbdemonte@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.69.0"
+  }
+}
