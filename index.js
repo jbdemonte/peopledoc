@@ -6,43 +6,58 @@ function PeopleDoc(settings) {
   }
   var self = this;
 
-  this.client = new Client(self, settings);
+  this.settings = settings;
+
+  this.client = new Client(self);
 
   this.Employee = require('./lib/api/employee')(self);
+  this.RegistrationReference = require('./lib/api/registrationReference')(self);
+  this.Signature = require('./lib/api/signature')(self);
+  this.Document = require('./lib/api/document')(self);
+
+  /**
+   * Deferred promise
+   * @typedef {Object} Deferred
+   * @property {Boolean} _isDeferred
+   * @property {Function} resolve
+   * @property {Function} reject
+   * @property {Function} callback
+   * @property {Object} [promise]
+   */
 
   /**
    * Create a deferred based on a callback function
-   * @param {function} [callback]
-   * @returns {Object} result
-   * @returns {Function} result.resolve
-   * @returns {Function} result.reject
-   * @returns {Function} result.callback
-   * @returns {Object} [result.promise]
+   * @param {Function|Deferred} [callback]
+   * @returns {Deferred}
    */
   this.defer = function (callback) {
-    var defer = {};
+    var deferred = {
+      _isDeferred: true
+    };
     if (typeof callback === 'function') {
-      defer.resolve = function (result) {
+      deferred.resolve = function (result) {
         callback(undefined, result);
       };
-      defer.reject = function (reason) {
+      deferred.reject = function (reason) {
         callback(reason);
       };
-      defer.callback = callback;
+      deferred.callback = callback;
+    } else if (callback && callback._isDeferred) {
+      return callback;
     } else {
-      defer.promise = new PeopleDoc.Promise(function (resolve, reject) {
-        defer.resolve = resolve;
-        defer.reject = reject;
+      deferred.promise = new PeopleDoc.Promise(function (resolve, reject) {
+        deferred.resolve = resolve;
+        deferred.reject = reject;
       });
-      defer.callback = function (err, result) {
+      deferred.callback = function (err, result) {
         if (err) {
-          defer.reject(err);
+          deferred.reject(err);
         } else {
-          defer.resolve(result);
+          deferred.resolve(result);
         }
       };
     }
-    return defer;
+    return deferred;
   };
 
 }
