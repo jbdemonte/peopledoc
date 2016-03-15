@@ -16,50 +16,29 @@ function PeopleDoc(settings) {
   this.Document = require('./lib/api/document')(self);
 
   /**
-   * Deferred promise
-   * @typedef {Object} Deferred
-   * @property {Boolean} _isDeferred
-   * @property {Function} resolve
-   * @property {Function} reject
-   * @property {Function} callback
-   * @property {Object} [promise]
+   * Promify
+   * @param {Function} [callback]
+   * @param {Function} fn - Function to execute
+   * @returns {Promise|undefined}
    */
-
-  /**
-   * Create a deferred based on a callback function
-   * @param {Function|Deferred} [callback]
-   * @returns {Deferred}
-   */
-  this.defer = function (callback) {
-    var deferred = {
-      _isDeferred: true
-    };
+  this.run = function (callback, fn) {
     if (typeof callback === 'function') {
-      deferred.resolve = function (result) {
-        callback(undefined, result);
-      };
-      deferred.reject = function (reason) {
-        callback(reason);
-      };
-      deferred.callback = callback;
-    } else if (callback && callback._isDeferred) {
-      return callback;
+      try {
+        fn(
+          function (result) {
+            callback(undefined, result);
+          },
+          function (reason) {
+            callback(reason);
+          }
+        );
+      } catch (err) {
+        callback(err);
+      }
     } else {
-      deferred.promise = new PeopleDoc.Promise(function (resolve, reject) {
-        deferred.resolve = resolve;
-        deferred.reject = reject;
-      });
-      deferred.callback = function (err, result) {
-        if (err) {
-          deferred.reject(err);
-        } else {
-          deferred.resolve(result);
-        }
-      };
+      return new PeopleDoc.Promise(fn);
     }
-    return deferred;
-  };
-
+  }
 }
 
 PeopleDoc.Promise = Promise;
