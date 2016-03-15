@@ -11,7 +11,6 @@ function PeopleDoc(settings) {
   this.client = new Client(self);
 
   this.Employee = require('./lib/api/employee')(self);
-  this.RegistrationReference = require('./lib/api/registrationReference')(self);
   this.Signature = require('./lib/api/signature')(self);
   this.Document = require('./lib/api/document')(self);
 
