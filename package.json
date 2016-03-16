@@ -1,12 +1,22 @@
 {
   "name": "peopledoc",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "PeopleDoc API client",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jean-Baptiste Demonte <jbdemonte@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jbdemonte/peopledoc.git"
+  },
+  "tags": [
+    "peopledoc",
+    "people-doc",
+    "api",
+    "promise"
+  ],
   "license": "MIT",
   "dependencies": {
     "request": "^2.69.0"
