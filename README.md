@@ -112,7 +112,7 @@ Consume Signature API.
      },
      {
        'organization_code': 'FSUD2',
-       'registration_number': 'BYUIE5685677'
+       'registration_number': 'BYUIE5685677',
        'active': false,
        'departure_date': '2014-12-31'
      }
