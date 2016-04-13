@@ -192,6 +192,7 @@ signature.send('./document.pdf', function (err, result) {
 
 ```
 
+signature.send also accepts a readable stream instead of the file path.
 
 ### Finding available signatures
 
